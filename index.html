@@ -1,0 +1,1770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Week - For Khushi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        /* 💝 Love Dialog */
+.love-dialog{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.6);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:2000;
+  animation:fadeIn .6s ease;
+}
+
+.love-box{
+  background:linear-gradient(135deg,#ff9a9e,#fecfef);
+  padding:25px;
+  border-radius:20px;
+  max-width:320px;
+  text-align:center;
+  color:#fff;
+  box-shadow:0 0 25px rgba(0,0,0,.3);
+  animation:popIn .6s ease;
+}
+
+.love-box h2{
+  margin-bottom:10px;
+}
+
+.love-box p{
+  font-size:14px;
+  line-height:1.5;
+  margin-bottom:15px;
+}
+
+.love-box button{
+  padding:8px 18px;
+  border:none;
+  border-radius:20px;
+  background:white;
+  color:#ff4e8a;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+@keyframes popIn{
+  from{transform:scale(.6);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 4px;
+            background: linear-gradient(to right, #ff3366, #ff758c);
+            z-index: 1000;
+            transition: width 0.3s;
+        }
+        
+        .day-indicator {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 999;
+        }
+        
+        .day-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #333;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .day-dot.active {
+            background: #ff3366;
+            transform: scale(1.5);
+            box-shadow: 0 0 10px #ff3366;
+        }
+        
+        .day-dot::after {
+            content: attr(data-day);
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+        }
+        
+        .day-dot:hover::after {
+            opacity: 1;
+        }
+        
+        section {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden;
+            opacity: 0.3;
+            transition: opacity 1s;
+        }
+        
+        section.active {
+            opacity: 1;
+        }
+        
+        .day-title {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(to right, #ff758c, #ff3366);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 5px 15px rgba(255, 51, 102, 0.3);
+        }
+        
+        .date {
+            font-size: 1.2rem;
+            color: #ff9eb5;
+            margin-bottom: 40px;
+            letter-spacing: 2px;
+        }
+        
+        .quote {
+            font-size: 1.5rem;
+            font-style: italic;
+            text-align: center;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: rgba(255, 51, 102, 0.1);
+            border-radius: 15px;
+            border-left: 4px solid #ff3366;
+            line-height: 1.6;
+        }
+        
+        /* Rose Day Styles */
+        .rose-container {
+            width: 300px;
+            height: 400px;
+            position: relative;
+            margin: 30px auto;
+        }
+        
+        .rose {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-origin: bottom center;
+        }
+        
+        .petal {
+            position: absolute;
+            background: #ff3366;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            transform-origin: bottom center;
+            opacity: 0;
+        }
+        
+        .stem {
+            position: absolute;
+            width: 10px;
+            height: 250px;
+            background: linear-gradient(to bottom, #2d7d2d, #1a5c1a);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 5px;
+        }
+        
+        .leaf {
+            position: absolute;
+            width: 40px;
+            height: 25px;
+            background: #2d7d2d;
+            border-radius: 50% 0 50% 0;
+            transform: rotate(45deg);
+        }
+        
+        .floating-text {
+            position: absolute;
+            font-size: 1.2rem;
+            color: #ff9eb5;
+            opacity: 0;
+        }
+        
+        /* Propose Day Styles */
+        .terminal {
+            width: 90%;
+            max-width: 800px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            margin: 30px auto;
+        }
+        
+        .terminal-header {
+            background: #333;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .close { background: #ff5f57; }
+        .minimize { background: #ffbd2e; }
+        .maximize { background: #28ca42; }
+        
+        .terminal-title {
+            margin-left: 20px;
+            font-family: monospace;
+            color: #ccc;
+        }
+        
+        .terminal-body {
+            padding: 25px;
+            font-family: 'Courier New', monospace;
+            color: #0af;
+            min-height: 250px;
+        }
+        
+        .code-line {
+            margin-bottom: 10px;
+            opacity: 0;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 20px;
+            background: #0af;
+            animation: blink 1s infinite;
+            margin-left: 5px;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .propose-buttons {
+            display: flex;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        .yes-btn {
+            background: linear-gradient(to right, #ff3366, #ff758c);
+            color: white;
+            box-shadow: 0 5px 20px rgba(255, 51, 102, 0.4);
+        }
+        
+        .no-btn {
+            background: linear-gradient(to right, #666, #999);
+            color: white;
+            position: relative;
+        }
+        
+        /* Chocolate Day Styles */
+        .chocolate-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .chocolate-particle {
+            position: absolute;
+            font-size: 24px;
+            pointer-events: auto;
+            cursor: pointer;
+            opacity: 0;
+        }
+        
+        /* Teddy Day Styles */
+        .teddy-container {
+            position: relative;
+            width: 300px;
+            height: 350px;
+            margin: 30px auto;
+        }
+        
+        .teddy {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            background: #8b4513;
+            border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+            top: 50px;
+            left: 25px;
+        }
+        
+        .ear {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: #8b4513;
+            border-radius: 50%;
+            top: -20px;
+        }
+        
+        .ear.left { left: 20px; }
+        .ear.right { right: 20px; }
+        
+        .inner-ear {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: #a0522d;
+            border-radius: 50%;
+            top: 15px;
+            left: 15px;
+        }
+        
+        .eye {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: white;
+            border-radius: 50%;
+            top: 70px;
+            overflow: hidden;
+        }
+        
+        .eye.left { left: 70px; }
+        .eye.right { right: 70px; }
+        
+        .pupil {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: #222;
+            border-radius: 50%;
+            top: 7px;
+            left: 7px;
+            transition: all 0.1s;
+        }
+        
+        .nose {
+            position: absolute;
+            width: 40px;
+            height: 25px;
+            background: black;
+            border-radius: 50%;
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .speech-bubble {
+            position: absolute;
+            top: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            color: #333;
+            padding: 15px 25px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            max-width: 250px;
+            text-align: center;
+            opacity: 0;
+        }
+        
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 15px solid transparent;
+            border-top-color: white;
+        }
+        
+        /* Promise Day Styles */
+        .code-block {
+            background: #1a1a1a;
+            padding: 30px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            margin: 30px auto;
+            max-width: 700px;
+            overflow-x: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .code-keyword { color: #ff79c6; }
+        .code-function { color: #50fa7b; }
+        .code-string { color: #f1fa8c; }
+        .code-var { color: #8be9fd; }
+        
+        .run-btn {
+            margin: 30px auto;
+            background: linear-gradient(to right, #50fa7b, #8be9fd);
+            color: #1a1a1a;
+            font-weight: bold;
+            padding: 15px 40px;
+        }
+        
+        .toast {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 30px 50px;
+            border-radius: 15px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            transition: transform 0.5s;
+        }
+        
+        .toast.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        /* Hug Day Styles */
+        .hug-container {
+            width: 400px;
+            height: 300px;
+            position: relative;
+            margin: 30px auto;
+        }
+        
+        .circle {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            top: 90px;
+            filter: url(#gooey);
+        }
+        
+        .circle.pink {
+            background: linear-gradient(to right, #ff3366, #ff758c);
+            left: 50px;
+        }
+        
+        .circle.blue {
+            background: linear-gradient(to right, #3366ff, #758cff);
+            right: 50px;
+        }
+        
+        /* Kiss Day Styles */
+        .kiss-container {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            margin: 40px auto;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .emoji {
+            font-size: 8rem;
+            transition: all 0.5s;
+            cursor: pointer;
+        }
+        
+        .instructions {
+            position: absolute;
+            bottom: -50px;
+            width: 100%;
+            text-align: center;
+            color: #ff9eb5;
+            font-size: 1.2rem;
+        }
+        
+        /* Valentine's Day Styles */
+        .valentine-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            perspective: 1000px;
+        }
+        
+        .gallery-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.5s;
+            transform-style: preserve-3d;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 4rem;
+            color: #ff3366;
+        }
+        
+        .gallery-item:hover {
+            transform: rotateY(10deg) rotateX(5deg) scale(1.05);
+        }
+        
+        .heart-container {
+            margin: 50px auto;
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+        
+        .beating-heart {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #ff3366;
+            transform: rotate(45deg);
+            animation: heartbeat 1.2s infinite;
+        }
+        
+        .beating-heart::before,
+        .beating-heart::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: #ff3366;
+            border-radius: 50%;
+        }
+        
+        .beating-heart::before {
+            top: -50%;
+            left: 0;
+        }
+        
+        .beating-heart::after {
+            top: 0;
+            left: -50%;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: rotate(45deg) scale(1); }
+            5% { transform: rotate(45deg) scale(1.1); }
+            10% { transform: rotate(45deg) scale(1); }
+            15% { transform: rotate(45deg) scale(1.2); }
+            20% { transform: rotate(45deg) scale(1); }
+            100% { transform: rotate(45deg) scale(1); }
+        }
+        
+        .music-player {
+            margin: 30px auto;
+            text-align: center;
+        }
+        
+        .music-btn {
+            background: rgba(255, 51, 102, 0.2);
+            border: 2px solid #ff3366;
+            color: #ff3366;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .music-btn:hover {
+            background: rgba(255, 51, 102, 0.4);
+            transform: scale(1.05);
+        }
+        
+        .final-message {
+            font-size: 2.5rem;
+            text-align: center;
+            margin: 40px auto;
+            min-height: 100px;
+            color: #ff758c;
+        }
+        
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 40px;
+            background: #ff758c;
+            margin-left: 5px;
+            animation: blink 1s infinite;
+        }
+        
+        /* Feb 17 Birthday Section */
+        .birthday-section {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a0033, #330033);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .countdown {
+            display: flex;
+            gap: 30px;
+            margin: 40px auto;
+        }
+        
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .countdown-value {
+            font-size: 3.5rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #ff3366, #ff9eb5);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            line-height: 1;
+        }
+        
+        .countdown-label {
+            font-size: 1rem;
+            color: #ff9eb5;
+            margin-top: 10px;
+        }
+        
+        .birthday-content {
+            display: none;
+        }
+        
+        .balloon {
+            position: absolute;
+            width: 60px;
+            height: 80px;
+            background: #ff3366;
+            border-radius: 50%;
+            bottom: -100px;
+            animation: float 8s ease-in infinite;
+        }
+        
+        .balloon::before {
+            content: '';
+            position: absolute;
+            width: 2px;
+            height: 60px;
+            background: white;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .balloon:nth-child(2n) {
+            background: #3366ff;
+            animation-delay: 0.5s;
+            animation-duration: 7s;
+        }
+        
+        .balloon:nth-child(3n) {
+            background: #ffcc00;
+            animation-delay: 1s;
+            animation-duration: 9s;
+        }
+        
+        .balloon:nth-child(4n) {
+            background: #33cc33;
+            animation-delay: 1.5s;
+            animation-duration: 6.5s;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0);
+                bottom: -100px;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(20deg);
+                bottom: 100vh;
+            }
+        }
+        
+        .cake {
+            width: 200px;
+            height: 100px;
+            background: #ffcccc;
+            border-radius: 10px;
+            position: relative;
+            margin: 40px auto;
+        }
+        
+        .cake-top {
+            width: 220px;
+            height: 30px;
+            background: #ff9999;
+            border-radius: 50% 50% 0 0;
+            position: absolute;
+            top: -15px;
+            left: -10px;
+        }
+        
+        .candle {
+            width: 10px;
+            height: 40px;
+            background: white;
+            position: absolute;
+            top: -55px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .flame {
+            width: 20px;
+            height: 30px;
+            background: #ffcc00;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -90px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: flicker 0.5s infinite alternate;
+        }
+        
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1); opacity: 1; }
+            100% { transform: translateX(-50%) scale(1.1); opacity: 0.8; }
+        }
+        
+        .blow-instruction {
+            margin: 20px auto;
+            font-size: 1.2rem;
+            color: #ff9eb5;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .day-title {
+                font-size: 2.5rem;
+            }
+            
+            .quote {
+                font-size: 1.2rem;
+                padding: 15px;
+            }
+            
+            .propose-buttons {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .kiss-container {
+                flex-direction: column;
+                height: 400px;
+            }
+            
+            .emoji {
+                font-size: 5rem;
+            }
+            
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .countdown {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .countdown-value {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <div class="day-indicator" id="dayIndicator">
+        <div class="day-dot active" data-day="Rose Day" onclick="scrollToSection(0)"></div>
+        <div class="day-dot" data-day="Propose Day" onclick="scrollToSection(1)"></div>
+        <div class="day-dot" data-day="Chocolate Day" onclick="scrollToSection(2)"></div>
+        <div class="day-dot" data-day="Teddy Day" onclick="scrollToSection(3)"></div>
+        <div class="day-dot" data-day="Promise Day" onclick="scrollToSection(4)"></div>
+        <div class="day-dot" data-day="Hug Day" onclick="scrollToSection(5)"></div>
+        <div class="day-dot" data-day="Kiss Day" onclick="scrollToSection(6)"></div>
+        <div class="day-dot" data-day="Valentine's Day" onclick="scrollToSection(7)"></div>
+        <div class="day-dot" data-day="Feb 17" onclick="scrollToSection(8)"></div>
+    </div>
+    
+    <!-- Rose Day - Feb 7 -->
+    <section id="rose-day" class="active">
+        <h1 class="day-title">Rose Day</h1>
+        <div class="date">February 7</div>
+        
+        <div class="rose-container">
+            <div class="rose" id="rose">
+                <div class="stem"></div>
+                <div class="leaf" style="left: 40px; bottom: 80px; transform: rotate(30deg);"></div>
+                <div class="leaf" style="right: 40px; bottom: 100px; transform: rotate(-30deg);"></div>
+            </div>
+        </div>
+        
+        <div class="quote">
+            "Roses are #FF0000, Violets are #0000FF, all my base classes belong to you."
+        </div>
+    </section>
+    
+    <!-- Propose Day - Feb 8 -->
+    <section id="propose-day">
+        <h1 class="day-title">Propose Day</h1>
+        <div class="date">February 8</div>
+        
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="terminal-buttons">
+                    <div class="terminal-button close"></div>
+                    <div class="terminal-button minimize"></div>
+                    <div class="terminal-button maximize"></div>
+                </div>
+                <div class="terminal-title">proposal.js</div>
+            </div>
+            <div class="terminal-body" id="terminalBody">
+                <div class="code-line" id="line1"></div>
+                <div class="code-line" id="line2"></div>
+                <div class="code-line" id="line3"></div>
+                <div class="code-line" id="line4"></div>
+                <div class="code-line" id="line5"></div>
+                <span class="cursor" id="cursor"></span>
+            </div>
+        </div>
+        
+        <div class="propose-buttons">
+            <button class="btn yes-btn" id="yesBtn">YES</button>
+            <button class="btn no-btn" id="noBtn">NO</button>
+        </div>
+        
+        <div class="quote">
+            "Are you a keyboard? Because you're just my type."
+        </div>
+    </section>
+    
+    <!-- Chocolate Day - Feb 9 -->
+    <section id="chocolate-day">
+        <h1 class="day-title">Chocolate Day</h1>
+        <div class="date">February 9</div>
+        
+        <div class="chocolate-container" id="chocolateContainer"></div>
+        
+        <div class="quote">
+            "Life without you is like a website without CSS... unstyled and broken."
+        </div>
+    </section>
+    
+    <!-- Teddy Day - Feb 10 -->
+    <section id="teddy-day">
+        <h1 class="day-title">Teddy Day</h1>
+        <div class="date">February 10</div>
+        
+        <div class="teddy-container">
+            <div class="speech-bubble" id="speechBubble">Sending you a virtual hug!</div>
+            <div class="teddy">
+                <div class="ear left">
+                    <div class="inner-ear"></div>
+                </div>
+                <div class="ear right">
+                    <div class="inner-ear"></div>
+                </div>
+                <div class="eye left">
+                    <div class="pupil" id="leftPupil"></div>
+                </div>
+                <div class="eye right">
+                    <div class="pupil" id="rightPupil"></div>
+                </div>
+                <div class="nose"></div>
+            </div>
+        </div>
+        
+        <div class="quote">
+            "I promise to debug all your bad days."
+        </div>
+    </section>
+    
+    <!-- Promise Day - Feb 11 -->
+    <section id="promise-day">
+        <h1 class="day-title">Promise Day</h1>
+        <div class="date">February 11</div>
+        
+        <div class="code-block">
+            <span class="code-keyword">const</span> <span class="code-var">ourFuture</span> = <span class="code-keyword">new</span> <span class="code-function">Promise</span>((<span class="code-var">resolve</span>, <span class="code-var">reject</span>) => {<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-function">resolve</span>(<span class="code-string">'Together Forever'</span>);<br>
+            });
+        </div>
+        
+        <button class="btn run-btn" id="runPromiseBtn">Run Code</button>
+        
+        <div class="toast" id="promiseToast">
+            Promise Kept: Together Forever
+        </div>
+        
+        <div class="quote">
+            "My love for you is like a constant variable... it can never change."
+        </div>
+    </section>
+    
+    <!-- Hug Day - Feb 12 -->
+    <section id="hug-day">
+        <h1 class="day-title">Hug Day</h1>
+        <div class="date">February 12</div>
+        
+        <div class="hug-container">
+            <svg style="position: absolute; width: 0; height: 0;">
+                <defs>
+                    <filter id="gooey">
+                        <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
+                        <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
+                        <feBlend in="SourceGraphic" in2="goo" />
+                    </filter>
+                </defs>
+            </svg>
+            <div class="circle pink" id="circlePink"></div>
+            <div class="circle blue" id="circleBlue"></div>
+        </div>
+        
+        <div class="quote">
+            "I want to align-items: center with you forever."
+        </div>
+    </section>
+    
+    <!-- Kiss Day - Feb 13 -->
+    <section id="kiss-day">
+        <h1 class="day-title">Kiss Day</h1>
+        <div class="date">February 13</div>
+        
+        <div class="kiss-container">
+            <div class="emoji" id="emoji1">😊</div>
+            <div class="emoji" id="emoji2">😊</div>
+            <div class="instructions" id="kissInstructions">Hold SPACEBAR to bring them together for a kiss!</div>
+        </div>
+        
+        <div class="quote">
+            "You are the semi-colon to my code; things just don't work without you."
+        </div>
+    </section>
+    
+    <!-- Valentine's Day - Feb 14 -->
+    <section id="valentine-day">
+        <h1 class="day-title">Valentine's Day</h1>
+        <div class="date">February 14</div>
+        
+        <div class="valentine-container">
+            <div class="gallery">
+                <div class="gallery-item">❤️</div>
+                <div class="gallery-item">💖</div>
+                <div class="gallery-item">💕</div>
+                <div class="gallery-item">💘</div>
+                <div class="gallery-item">💝</div>
+                <div class="gallery-item">💓</div>
+            </div>
+            
+            <div class="heart-container">
+                <div class="beating-heart"></div>
+            </div>
+            
+            <div class="music-player">
+                <button class="music-btn" id="musicBtn">
+                    <i class="fas fa-play"></i> Play Romantic Music
+                </button>
+            </div>
+            
+            <div class="final-message" id="finalMessage"></div>
+        </div>
+        
+        <div class="quote">
+            "If (You == Happy) { Me = Happy; } Else { Me.fix(You); }"
+        </div>
+    </section>
+    
+    <!-- Feb 17 Birthday Section -->
+    <section id="birthday-section" class="birthday-section">
+        <h1 class="day-title">Mission: Feb 17</h1>
+        
+        <div class="countdown" id="countdown">
+            <div class="countdown-item">
+                <div class="countdown-value" id="days">00</div>
+                <div class="countdown-label">Days</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-value" id="hours">00</div>
+                <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-value" id="minutes">00</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-value" id="seconds">00</div>
+                <div class="countdown-label">Seconds</div>
+            </div>
+        </div>
+        
+        <div class="birthday-content" id="birthdayContent">
+            <h2 style="font-size: 3rem; margin-bottom: 20px;">Happy Birthday Mehak!</h2>
+            <div id="balloonContainer"></div>
+            
+            <div class="cake">
+                <div class="cake-top"></div>
+                <div class="candle"></div>
+                <div class="flame" id="flame"></div>
+            </div>
+            
+            <div class="blow-instruction" id="blowInstruction">
+                Blow into your microphone or click the flame to blow out the candle!
+            </div>
+        </div>
+    </section>
+<div id="loveDialog" class="love-dialog">
+  <div class="love-box">
+    <h2>Yay Mehak Said YES! 💖</h2>
+    <p>
+      Mehak, you just made this moment the most special memory of my life ✨  
+      I promise to always keep you smiling, safe, and deeply loved ❤️
+    </p>
+    <button onclick="closeLoveDialog()">Close 💕</button>
+  </div>
+</div>
+
+    <script>
+        // Initialize GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+        
+        // Track scroll progress
+        window.addEventListener('scroll', function() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        });
+        
+        // Update active day indicator
+        const sections = document.querySelectorAll('section');
+        const dayDots = document.querySelectorAll('.day-dot');
+        
+        function updateActiveSection() {
+            let currentIndex = 0;
+            let maxVisible = 0;
+            
+            sections.forEach((section, index) => {
+                const rect = section.getBoundingClientRect();
+                const visible = rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2;
+                
+                if (visible) {
+                    currentIndex = index;
+                    section.classList.add('active');
+                    
+                    // Trigger animations for section
+                    triggerSectionAnimations(section.id);
+                } else {
+                    section.classList.remove('active');
+                }
+                
+                // Update day dots
+                dayDots.forEach((dot, dotIndex) => {
+                    if (dotIndex === currentIndex) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            });
+        }
+        
+        function scrollToSection(index) {
+            sections[index].scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        window.addEventListener('scroll', updateActiveSection);
+        window.addEventListener('load', updateActiveSection);
+        
+        // Section-specific animations
+        function triggerSectionAnimations(sectionId) {
+            switch(sectionId) {
+                case 'rose-day':
+                    animateRose();
+                    break;
+                case 'propose-day':
+                    typeTerminalCode();
+                    break;
+                case 'chocolate-day':
+                    startChocolateRain();
+                    break;
+                case 'teddy-day':
+                    showSpeechBubble();
+                    break;
+                case 'hug-day':
+                    animateHug();
+                    break;
+                case 'kiss-day':
+                    setupKissAnimation();
+                    break;
+                case 'valentine-day':
+                    typeFinalMessage();
+                    break;
+                case 'birthday-section':
+                    updateCountdown();
+                    break;
+            }
+        }
+        
+        // 1. Rose Day Animation
+        function animateRose() {
+            const rose = document.getElementById('rose');
+            if (rose.dataset.animated) return;
+            
+            rose.dataset.animated = true;
+            
+            // Create petals
+            for (let i = 0; i < 24; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                
+                const angle = (i / 24) * 360;
+                const distance = 40 + (i % 3) * 20;
+                
+                petal.style.width = `${40 + (i % 3) * 10}px`;
+                petal.style.height = `${50 + (i % 3) * 10}px`;
+                petal.style.background = i % 2 === 0 ? 
+                    'linear-gradient(to bottom, #ff3366, #ff758c)' : 
+                    'linear-gradient(to bottom, #ff758c, #ff3366)';
+                petal.style.left = '50%';
+                petal.style.bottom = '120px';
+                petal.style.transform = `translateX(-50%) rotate(${angle}deg) translateY(${-distance}px) rotate(${angle}deg)`;
+                
+                rose.appendChild(petal);
+                
+                // Animate petal
+                gsap.to(petal, {
+                    opacity: 1,
+                    duration: 1,
+                    delay: i * 0.05,
+                    ease: "power2.out"
+                });
+            }
+            
+            // Create floating text
+            const texts = ["Roses are", "#FF0000", "Violets are", "#0000FF", "All my base", "classes", "belong to you"];
+            
+            texts.forEach((text, i) => {
+                const textEl = document.createElement('div');
+                textEl.className = 'floating-text';
+                textEl.textContent = text;
+                textEl.style.left = `${20 + Math.random() * 60}%`;
+                textEl.style.top = `${30 + Math.random() * 50}%`;
+                document.getElementById('rose-day').appendChild(textEl);
+                
+                gsap.to(textEl, {
+                    opacity: 0.8,
+                    y: -20,
+                    duration: 2,
+                    delay: i * 0.3,
+                    repeat: -1,
+                    yoyo: true,
+                    ease: "sine.inOut"
+                });
+            });
+        }
+        
+        // 2. Propose Day Animation
+        function typeTerminalCode() {
+            const terminalBody = document.getElementById('terminalBody');
+            if (terminalBody.dataset.typed) return;
+            
+            terminalBody.dataset.typed = true;
+            
+            const lines = [
+                "> Initializing proposal...",
+                "> Checking compatibility... ✓",
+                "> Loading emotions... 100%",
+                "> const love = true;",
+                "> while(love) { console.log('Will you be my Valentine?'); }"
+            ];
+            
+            lines.forEach((line, i) => {
+                const lineEl = document.getElementById(`line${i+1}`);
+                
+                // Typewriter effect
+                let charIndex = 0;
+                function typeChar() {
+                    if (charIndex < line.length) {
+                        lineEl.textContent += line.charAt(charIndex);
+                        charIndex++;
+                        setTimeout(typeChar, 50);
+                    }
+                }
+                
+                setTimeout(() => {
+                    typeChar();
+                }, i * 800);
+            });
+            
+            // Setup NO button behavior
+            const noBtn = document.getElementById('noBtn');
+            noBtn.addEventListener('mouseover', function() {
+                const x = Math.random() * (window.innerWidth - 200);
+                const y = Math.random() * (window.innerHeight - 100);
+                
+                this.style.position = 'fixed';
+                this.style.left = `${x}px`;
+                this.style.top = `${y}px`;
+            });
+            
+            // Setup YES button behavior
+            const yesBtn = document.getElementById('yesBtn');
+            yesBtn.addEventListener('click', function() {
+                // Create fireworks
+                createFireworks();
+                
+                // Play audio
+                const audio = new Audio('./love.mp4');
+                audio.volume = 0.5;
+                audio.play();
+                
+                // Show message
+                alert("Happy Valentine's Week, Khushi! You are the best error I never want to debug. I love you! Wait for the 17th... something special is coming.");
+            });
+        }
+        
+        function createFireworks() {
+            const colors = ['#ff3366', '#ff758c', '#ffcc00', '#00ccff', '#9933ff'];
+            
+            for (let i = 0; i < 50; i++) {
+                const firework = document.createElement('div');
+                firework.style.position = 'fixed';
+                firework.style.width = '10px';
+                firework.style.height = '10px';
+                firework.style.borderRadius = '50%';
+                firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                firework.style.left = `${Math.random() * 100}vw`;
+                firework.style.top = `${Math.random() * 100}vh`;
+                firework.style.zIndex = '1000';
+                firework.style.pointerEvents = 'none';
+                
+                document.body.appendChild(firework);
+                
+                // Animate
+                gsap.to(firework, {
+                    x: Math.random() * 200 - 100,
+                    y: Math.random() * 200 - 100,
+                    opacity: 0,
+                    scale: 3,
+                    duration: 1,
+                    onComplete: () => firework.remove()
+                });
+            }
+        }
+        
+        function sayYes(){
+  startFireworks();
+  showLoveDialog();
+}
+
+function showLoveDialog(){
+  document.getElementById("loveDialog").style.display="flex";
+}
+
+function closeLoveDialog(){
+  document.getElementById("loveDialog").style.display="none";
+}
+
+        // 3. Chocolate Day Animation
+        let chocolateInterval;
+        function startChocolateRain() {
+            const container = document.getElementById('chocolateContainer');
+            if (container.dataset.started) return;
+            
+            container.dataset.started = true;
+            
+            // Create initial chocolates
+            for (let i = 0; i < 30; i++) {
+                createChocolateParticle();
+            }
+            
+            // Keep creating new chocolates
+            chocolateInterval = setInterval(createChocolateParticle, 500);
+            
+            // Click to explode
+            container.addEventListener('click', function(e) {
+                if (e.target.classList.contains('chocolate-particle')) {
+                    explodeChocolate(e.target);
+                }
+            });
+        }
+        
+        function createChocolateParticle() {
+            const container = document.getElementById('chocolateContainer');
+            const particle = document.createElement('div');
+            particle.className = 'chocolate-particle';
+            particle.innerHTML = Math.random() > 0.5 ? '🍫' : '❤️';
+            
+            const size = 20 + Math.random() * 30;
+            particle.style.fontSize = `${size}px`;
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.top = `-50px`;
+            
+            container.appendChild(particle);
+            
+            // Animate falling
+            const duration = 3 + Math.random() * 5;
+            const xMovement = Math.random() * 200 - 100;
+            
+            gsap.to(particle, {
+                top: '100vh',
+                x: xMovement,
+                rotation: Math.random() * 360,
+                opacity: 1,
+                duration: duration,
+                ease: "none",
+                onComplete: () => {
+                    particle.remove();
+                }
+            });
+        }
+        
+        function explodeChocolate(element) {
+            const x = parseFloat(element.style.left);
+            const y = parseFloat(element.style.top);
+            
+            // Create sparkles
+            for (let i = 0; i < 15; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.style.position = 'absolute';
+                sparkle.style.width = '8px';
+                sparkle.style.height = '8px';
+                sparkle.style.borderRadius = '50%';
+                sparkle.style.backgroundColor = '#ffcc00';
+                sparkle.style.left = `${x}px`;
+                sparkle.style.top = `${y}px`;
+                sparkle.style.zIndex = '1000';
+                sparkle.style.pointerEvents = 'none';
+                
+                document.getElementById('chocolateContainer').appendChild(sparkle);
+                
+                // Animate sparkle
+                gsap.to(sparkle, {
+                    x: Math.random() * 100 - 50,
+                    y: Math.random() * 100 - 50,
+                    opacity: 0,
+                    scale: 0,
+                    duration: 1,
+                    onComplete: () => sparkle.remove()
+                });
+            }
+            
+            element.remove();
+        }
+        
+        // 4. Teddy Day Animation
+        function showSpeechBubble() {
+            const bubble = document.getElementById('speechBubble');
+            if (bubble.dataset.shown) return;
+            
+            bubble.dataset.shown = true;
+            
+            gsap.to(bubble, {
+                opacity: 1,
+                y: -10,
+                duration: 1,
+                delay: 0.5
+            });
+            
+            // Make eyes follow mouse
+            document.addEventListener('mousemove', (e) => {
+                const leftPupil = document.getElementById('leftPupil');
+                const rightPupil = document.getElementById('rightPupil');
+                const teddyContainer = document.querySelector('.teddy-container');
+                
+                const rect = teddyContainer.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                const deltaX = e.clientX - centerX;
+                const deltaY = e.clientY - centerY;
+                
+                const angle = Math.atan2(deltaY, deltaX);
+                const distance = Math.min(7, Math.sqrt(deltaX*deltaX + deltaY*deltaY) / 50);
+                
+                const pupilX = Math.cos(angle) * distance;
+                const pupilY = Math.sin(angle) * distance;
+                
+                leftPupil.style.transform = `translate(${pupilX}px, ${pupilY}px)`;
+                rightPupil.style.transform = `translate(${pupilX}px, ${pupilY}px)`;
+            });
+        }
+        
+        // 5. Promise Day Animation
+        document.getElementById('runPromiseBtn').addEventListener('click', function() {
+            const toast = document.getElementById('promiseToast');
+            toast.classList.add('show');
+            
+            // Add confetti effect
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = i % 2 === 0 ? '#50fa7b' : '#8be9fd';
+                confetti.style.borderRadius = '50%';
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.top = '-20px';
+                confetti.style.zIndex = '1000';
+                confetti.style.pointerEvents = 'none';
+                
+                document.body.appendChild(confetti);
+                
+                gsap.to(confetti, {
+                    y: window.innerHeight + 20,
+                    x: Math.random() * 100 - 50,
+                    rotation: 360,
+                    duration: 2,
+                    ease: "power2.in",
+                    onComplete: () => confetti.remove()
+                });
+            }
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        });
+        
+        // 6. Hug Day Animation
+        function animateHug() {
+            const circlePink = document.getElementById('circlePink');
+            const circleBlue = document.getElementById('circleBlue');
+            
+            if (circlePink.dataset.animated) return;
+            circlePink.dataset.animated = true;
+            
+            // Animate circles coming together
+            gsap.to(circlePink, {
+                x: 100,
+                duration: 2,
+                delay: 0.5,
+                ease: "back.out(1.7)"
+            });
+            
+            gsap.to(circleBlue, {
+                x: -100,
+                duration: 2,
+                delay: 0.5,
+                ease: "back.out(1.7)"
+            });
+            
+            // Change color when they meet
+            setTimeout(() => {
+                circlePink.style.background = 'linear-gradient(to right, #ff3366, #9933ff)';
+                circleBlue.style.background = 'linear-gradient(to right, #3366ff, #ff3366)';
+                
+                // Create heart shape effect
+                circlePink.style.borderRadius = '50% 50% 0 0';
+                circleBlue.style.borderRadius = '0 0 50% 50%';
+                circlePink.style.transform = 'rotate(-45deg)';
+                circleBlue.style.transform = 'rotate(45deg) translateY(-20px)';
+            }, 2500);
+        }
+        
+        // 7. Kiss Day Animation
+        function setupKissAnimation() {
+            const emoji1 = document.getElementById('emoji1');
+            const emoji2 = document.getElementById('emoji2');
+            const instructions = document.getElementById('kissInstructions');
+            
+            let spacePressed = false;
+            
+            document.addEventListener('keydown', (e) => {
+                if (e.code === 'Space') {
+                    spacePressed = true;
+                    e.preventDefault();
+                    
+                    // Move emojis together
+                    gsap.to(emoji1, { x: 100, duration: 1 });
+                    gsap.to(emoji2, { x: -100, duration: 1 });
+                    
+                    // Change to kissing emojis
+                    setTimeout(() => {
+                        emoji1.textContent = '😘';
+                        emoji2.textContent = '😘';
+                        
+                        // Create heart explosion
+                        createHeartExplosion();
+                    }, 1000);
+                }
+            });
+            
+            document.addEventListener('keyup', (e) => {
+                if (e.code === 'Space') {
+                    spacePressed = false;
+                    
+                    // Reset emojis
+                    gsap.to(emoji1, { x: 0, duration: 0.5 });
+                    gsap.to(emoji2, { x: 0, duration: 0.5 });
+                    
+                    setTimeout(() => {
+                        emoji1.textContent = '😊';
+                        emoji2.textContent = '😊';
+                    }, 500);
+                }
+            });
+            
+            // Also allow click
+            instructions.addEventListener('click', () => {
+                document.dispatchEvent(new KeyboardEvent('keydown', {code: 'Space'}));
+                setTimeout(() => {
+                    document.dispatchEvent(new KeyboardEvent('keyup', {code: 'Space'}));
+                }, 2000);
+            });
+        }
+        
+        function createHeartExplosion() {
+            const container = document.getElementById('kiss-day');
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.textContent = '❤️';
+                heart.style.position = 'absolute';
+                heart.style.fontSize = '2rem';
+                heart.style.left = '50%';
+                heart.style.top = '50%';
+                heart.style.zIndex = '100';
+                heart.style.pointerEvents = 'none';
+                
+                container.appendChild(heart);
+                
+                gsap.to(heart, {
+                    x: Math.random() * 400 - 200,
+                    y: Math.random() * 400 - 200,
+                    opacity: 0,
+                    scale: 0,
+                    rotation: Math.random() * 360,
+                    duration: 1.5,
+                    ease: "power2.out",
+                    onComplete: () => heart.remove()
+                });
+            }
+        }
+        
+        // 8. Valentine's Day Animation
+        function typeFinalMessage() {
+            const messageEl = document.getElementById('finalMessage');
+            if (messageEl.dataset.typed) return;
+            
+            messageEl.dataset.typed = true;
+            
+            const message = "You are my favorite notification";
+            let charIndex = 0;
+            
+            function typeChar() {
+                if (charIndex < message.length) {
+                    messageEl.textContent += message.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeChar, 100);
+                } else {
+                    // Add cursor blink
+                    const cursor = document.createElement('span');
+                    cursor.className = 'typing-cursor';
+                    messageEl.appendChild(cursor);
+                }
+            }
+            
+            // Start typing after a delay
+            setTimeout(() => {
+                messageEl.textContent = '';
+                typeChar();
+            }, 1000);
+            
+            // Setup music player
+            const musicBtn = document.getElementById('musicBtn');
+            let audioPlaying = false;
+            let audio;
+            
+            musicBtn.addEventListener('click', function() {
+                if (!audioPlaying) {
+                    // In a real implementation, you would link to an actual audio file
+                    // For demo purposes, we'll just simulate it
+                    audio = new Audio('https://assets.mixkit.co/music/preview/mixkit-romantic-sunset-687.mp3');
+                    audio.volume = 0.3;
+                    audio.play();
+                    
+                    musicBtn.innerHTML = '<i class="fas fa-pause"></i> Pause Music';
+                    audioPlaying = true;
+                } else {
+                    audio.pause();
+                    musicBtn.innerHTML = '<i class="fas fa-play"></i> Play Romantic Music';
+                    audioPlaying = false;
+                }
+            });
+        }
+        
+        // 9. Feb 17 Birthday Countdown
+        function updateCountdown() {
+            const targetDate = new Date('Feb 17, 2026 00:00:00').getTime();
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            
+            // Check if it's Feb 17 or later
+            if (distance <= 0) {
+                document.getElementById('countdown').style.display = 'none';
+                document.getElementById('birthdayContent').style.display = 'block';
+                
+                // Create balloons
+                const balloonContainer = document.getElementById('balloonContainer');
+                for (let i = 0; i < 20; i++) {
+                    const balloon = document.createElement('div');
+                    balloon.className = 'balloon';
+                    balloon.style.left = `${Math.random() * 90}%`;
+                    balloon.style.animationDelay = `${Math.random() * 5}s`;
+                    balloonContainer.appendChild(balloon);
+                }
+                
+                // Setup candle blowing
+                const flame = document.getElementById('flame');
+                const blowInstruction = document.getElementById('blowInstruction');
+                
+                // Click to blow out
+                flame.addEventListener('click', blowOutCandle);
+                
+                // Try to use microphone for blowing detection
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ audio: true })
+                        .then(function(stream) {
+                            const audioContext = new AudioContext();
+                            const microphone = audioContext.createMediaStreamSource(stream);
+                            const analyser = audioContext.createAnalyser();
+                            microphone.connect(analyser);
+                            
+                            const dataArray = new Uint8Array(analyser.frequencyBinCount);
+                            
+                            function detectBlow() {
+                                analyser.getByteFrequencyData(dataArray);
+                                
+                                let total = 0;
+                                for (let i = 0; i < dataArray.length; i++) {
+                                    total += dataArray[i];
+                                }
+                                
+                                const average = total / dataArray.length;
+                                
+                                if (average > 50) { // Threshold for blow detection
+                                    blowOutCandle();
+                                }
+                                
+                                requestAnimationFrame(detectBlow);
+                            }
+                            
+                            detectBlow();
+                        })
+                        .catch(function(err) {
+                            console.log('Microphone access denied, using click only');
+                            blowInstruction.textContent = 'Click the flame to blow out the candle!';
+                        });
+                }
+            } else {
+                setTimeout(updateCountdown, 1000);
+            }
+        }
+        
+        function blowOutCandle() {
+            const flame = document.getElementById('flame');
+            const blowInstruction = document.getElementById('blowInstruction');
+            
+            // Animate flame going out
+            gsap.to(flame, {
+                scale: 0,
+                opacity: 0,
+                duration: 0.5,
+                onComplete: () => {
+                    flame.style.display = 'none';
+                    blowInstruction.textContent = 'Happy Birthday Mehak! 🎉';
+                    
+                    // Show birthday message
+                    setTimeout(() => {
+                        alert("Happy Birthday Mehak! Wishing you a day filled with joy and laughter!");
+                    }, 500);
+                }
+            });
+        }
+        
+        // Initialize everything on load
+        window.addEventListener('load', function() {
+            updateCountdown();
+        });
+    </script>
+</body>
+</html>
